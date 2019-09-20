@@ -1,0 +1,16 @@
+targets,	factors
+cc,	cc
+KRAS,	KRAS
+DSB,	(DSB | KRAS) & !(FAHRR | HRR2 | NHEJ)
+CHEK1,	ATM | ATR
+MAPKAPK2,	(ATM | ATR) & KRAS
+FAHRR,	(FAHRR | DSB | FANCD2I) & !NHEJ & !cell_death
+HRR2,	(HRR2 | DSB | NHEJ) & !NHEJ & !cell_death & !FAHRR
+CDC25B,	(cc | KRAS) & (!CHEK1 & MAPKAPK2) & !cell_death
+g2m_trans,	g2m_trans | CDC25B
+cell_death,	cell_death | (DSB & g2m_trans)
+ATM,	DSB
+ATR,	ATM
+FAcore,	ATM | ATR
+FANCD2I,	ATM | ATR | DSB | FAcore
+NHEJ,	(DSB | NHEJ) & !FAHRR & !HRR2 & !cell_death

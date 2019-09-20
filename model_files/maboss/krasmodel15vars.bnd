@@ -1,0 +1,90 @@
+Node cc {
+  logic = 	cc;
+  rate_up = @logic ? $u_cc : 0;
+  rate_down = @logic ? 0 : $d_cc;
+}
+
+Node KRAS {
+  logic = 	KRAS;
+  rate_up = @logic ? $u_KRAS : 0;
+  rate_down = @logic ? 0 : $d_KRAS;
+}
+
+Node DSB {
+  logic = 	(DSB|KRAS)&!(FAHRR|HRR2|NHEJ);
+  rate_up = @logic ? $u_DSB : 0;
+  rate_down = @logic ? 0 : $d_DSB;
+}
+
+Node CHEK1 {
+  logic = 	ATM|ATR;
+  rate_up = @logic ? $u_CHEK1 : 0;
+  rate_down = @logic ? 0 : $d_CHEK1;
+}
+
+Node MAPKAPK2 {
+  logic = 	(ATM|ATR)&KRAS;
+  rate_up = @logic ? $u_MAPKAPK2 : 0;
+  rate_down = @logic ? 0 : $d_MAPKAPK2;
+}
+
+Node FAHRR {
+  logic = 	(FAHRR|DSB|FANCD2I)&!NHEJ&!cell_death;
+  rate_up = @logic ? $u_FAHRR : 0;
+  rate_down = @logic ? 0 : $d_FAHRR;
+}
+
+Node HRR2 {
+  logic = 	(HRR2|DSB|NHEJ)&!NHEJ&!cell_death&!FAHRR;
+  rate_up = @logic ? $u_HRR2 : 0;
+  rate_down = @logic ? 0 : $d_HRR2;
+}
+
+Node CDC25B {
+  logic = 	(cc|KRAS)&(!CHEK1&MAPKAPK2)&!cell_death;
+  rate_up = @logic ? $u_CDC25B : 0;
+  rate_down = @logic ? 0 : $d_CDC25B;
+}
+
+Node g2m_trans {
+  logic = 	g2m_trans|CDC25B;
+  rate_up = @logic ? $u_g2m_trans : 0;
+  rate_down = @logic ? 0 : $d_g2m_trans;
+}
+
+Node cell_death {
+  logic = 	cell_death|(DSB&g2m_trans);
+  rate_up = @logic ? $u_cell_death : 0;
+  rate_down = @logic ? 0 : $d_cell_death;
+}
+
+Node ATM {
+  logic = 	DSB;
+  rate_up = @logic ? $u_ATM : 0;
+  rate_down = @logic ? 0 : $d_ATM;
+}
+
+Node ATR {
+  logic = 	ATM;
+  rate_up = @logic ? $u_ATR : 0;
+  rate_down = @logic ? 0 : $d_ATR;
+}
+
+Node FAcore {
+  logic = 	ATM|ATR;
+  rate_up = @logic ? $u_FAcore : 0;
+  rate_down = @logic ? 0 : $d_FAcore;
+}
+
+Node FANCD2I {
+  logic = 	ATM|ATR|DSB|FAcore;
+  rate_up = @logic ? $u_FANCD2I : 0;
+  rate_down = @logic ? 0 : $d_FANCD2I;
+}
+
+Node NHEJ {
+  logic = 	(DSB|NHEJ)&!FAHRR&!HRR2&!cell_death;
+  rate_up = @logic ? $u_NHEJ : 0;
+  rate_down = @logic ? 0 : $d_NHEJ;
+}
+

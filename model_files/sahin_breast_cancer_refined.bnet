@@ -1,0 +1,21 @@
+targets, factors
+EGF, EGF
+ERBB1, EGF
+ERBB2, EGF
+ERBB3, EGF
+ERBB_12, ERBB1 & ERBB2
+ERBB_13, ERBB1 & ERBB3
+ERBB_23, ERBB2 & ERBB3
+IGF1R, (ER_alpha | AKT1) & !ERBB_23
+ER_alpha, AKT1 | MEK1
+c_MYC, AKT1 | MEK1 | ER_alpha
+AKT1, ERBB1 | ERBB_12 | ERBB_13 | ERBB_23 | IGF1R
+MEK1, ERBB1 | ERBB_12 | ERBB_13 | ERBB_23 | IGF1R
+CDK2, Cyclin_E1 & !p21 & !p27
+CDK4, Cyclin_D1 & !p21 & !p27
+CDK6, Cyclin_D1
+Cyclin_D1, ER_alpha & c_MYC & (AKT1 | MEK1)
+Cyclin_E1, c_MYC
+p21, ER_alpha & !AKT1 & !c_MYC & !CDK4
+p27, ER_alpha & !CDK4 & !CDK2 & !AKT1 & !c_MYC
+pRB, (CDK4 & CDK6)| (CDK4 & CDK6 & CDK2) 

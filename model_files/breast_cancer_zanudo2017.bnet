@@ -1,0 +1,21 @@
+targets,	factors
+Alpelisib, Alpelisib
+Everolimus,	Everolimus
+PI3K,	PI3K&!Alpelisib
+PDK1_pm,	PI3K
+mTORC2_pm,	PI3K&!Everolimus
+AKT,	PI3K&(PDK1_pm|mTORC2_pm)
+PIM,	PIM
+PDK1,   PDK1
+mTORC2, mTORC2&!Everolimus
+SGK1,	PDK1& mTORC2
+FOXO3,	!AKT&!SGK1&!PIM
+PRAS40,	!AKT&!PIM
+TSC,	!AKT&!SGK1
+p21_p27,	FOXO3&(!AKT&!PIM)
+cycE_CDK2,	!p21_p27
+BIM,	FOXO3
+BAD,	!AKT&!PIM
+mTORC1,	(!TSC|!PRAS40)&!Everolimus
+Proliferation,	(cycE_CDK2|mTORC1)&!Apoptosis
+Apoptosis,	Apoptosis|(BIM&BAD&!mTORC1)
