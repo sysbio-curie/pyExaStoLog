@@ -1,8 +1,4 @@
-colomoto_jupyter
-jupyterlab
-ginsim
-pandas
-matplotlib
 numpy
-networkx
 scipy
+boolean.py
+jupyter
