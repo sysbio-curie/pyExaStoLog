@@ -1,0 +1,11 @@
+[run]
+omit = 
+	*/dist-packages/*
+	*/site-packages/*
+	*/tests/*
+
+[report]
+omit = 
+	*/dist-packages/*
+	*/site-packages/*
+	*/tests/*
