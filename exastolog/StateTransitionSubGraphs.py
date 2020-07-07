@@ -67,7 +67,10 @@ class StateTransitionSubGraphs:
         # row, col = np.where((A_sparse_sub - np.diag(A_sparse_sub.diagonal())) > 0)
         # Yet another trick to get the exact same results as matlab
         # The difference is returning the list from parsing via columns or via rows, hopefully nothing critical
-        col, row = np.where((A_sparse_sub - np.diag(A_sparse_sub.diagonal())).transpose() > 0)
+        
+        t_matr = (A_sparse_sub - sparse.diags(A_sparse_sub.diagonal())).transpose()        
+        
+        col, row, _ = sparse.find(t_matr > 0)
 
         diff = scc_memb_per_vert[row] != scc_memb_per_vert[col]
         
