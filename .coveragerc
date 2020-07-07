@@ -2,10 +2,10 @@
 omit = 
 	*/dist-packages/*
 	*/site-packages/*
-	*/tests/*
+	*/test/*
 
 [report]
 omit = 
 	*/dist-packages/*
 	*/site-packages/*
-	*/tests/*
+	*/test/*
