@@ -288,11 +288,10 @@ class Solution:
                     # if cycles are non-terminal, stat sol can be calculated by block inversion, sames as for acyclic graphs
                     if len(term_cycles_ind) == 0:
                         print("Empty term cycles ind")
-                        print(" NEEDS TO BE TESTED")
     #                      % here make sure if 'vert_topol_sort' is the right ordering...
                         stat_sol_submatr_blocks = self.fcn_block_inversion(K_sp_sub_reord, vert_topol_sort, x0, submatrix_inds)
                         self.stat_sol[submatrix_inds[vert_topol_sort]] = stat_sol_submatr_blocks
-                        self.term_verts_cell.append(submatrix_inds[vert_topol_sort[np.where(K_sp_sub_reord.diagonal() == 0)]])
+                        self.term_verts.append(submatrix_inds[vert_topol_sort[np.where(K_sp_sub_reord.diagonal() == 0)]])
 
                     else:
                         print("Non empty term cycles ind")
