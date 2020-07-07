@@ -1,6 +1,8 @@
+![Python application](https://github.com/vincent-noel/pyExaStoLog/workflows/Python%20application/badge.svg) [![PyPI version](https://badge.fury.io/py/exastolog.svg)](https://badge.fury.io/py/exastolog)
+
 # pyExaStoLog : a python library for EXAct calculation of STOchastic LOGical models 
 
-## Install dependencies
+## Install
     - pip install .
 
 ## Reference
