@@ -26,6 +26,8 @@ jobs:
         pip install coveralls
         if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
     - name: Test with unittest
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       run: |
         coverage run -a -m unittest exastolog.test.test_toy
         coverage run -a -m unittest exastolog.test.test_toy2
