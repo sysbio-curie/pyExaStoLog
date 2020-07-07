@@ -1,4 +1,4 @@
-![Python application](https://github.com/sysbio-curie/pyExaStoLog/workflows/Python%20application/badge.svg) [![PyPI version](https://badge.fury.io/py/exastolog.svg)](https://badge.fury.io/py/exastolog)
+![Python application](https://github.com/sysbio-curie/pyExaStoLog/workflows/Python%20application/badge.svg) [![Coverage Status](https://coveralls.io/repos/github/sysbio-curie/pyExaStoLog/badge.svg?branch=master)](https://coveralls.io/github/sysbio-curie/pyExaStoLog?branch=master) [![PyPI version](https://badge.fury.io/py/exastolog.svg)](https://badge.fury.io/py/exastolog)
 
 # pyExaStoLog : a python library for EXAct calculation of STOchastic LOGical models 
 
