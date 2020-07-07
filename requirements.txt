@@ -1,7 +1,4 @@
 numpy
 scipy
 boolean.py
-jupyter
-notebook
 networkx
-maboss
