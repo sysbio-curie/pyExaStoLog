@@ -151,9 +151,8 @@ class Solution:
         nonterm_block_inds = range(dim_matr-dim_kernel)
         
         l0_blocks = sparse.lil_matrix((size_r0_blocks[0], size_r0_blocks[1])).transpose()
-        t_inds = np.where(np.logical_not(np.isin(r0_blocks, 0)).transpose())
-        
-        l0_blocks[t_inds] = 1
+        t_inds = sparse.find((r0_blocks != 0).transpose())
+        l0_blocks[np.ix_(t_inds[0], t_inds[1])] = 1
         
         X_block = (
             -l0_blocks[np.ix_(colnum_r_null_array,term_block_inds)]
