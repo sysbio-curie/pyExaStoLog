@@ -136,11 +136,17 @@ class StateTransitionSubGraphs:
     def fcn_scc_subgraphs(self, A_sparse, x0):
         
         print("Indentifying SCCs")
-        G = nx.from_scipy_sparse_matrix(A_sparse, create_using=nx.DiGraph())
-        G.remove_edges_from(nx.selfloop_edges(G))
         
-        # Here we get a generator. Do I really need to compute it now ?
-        self.subnetws = [list(g) for g in nx.weakly_connected_components(G)]
+        B_sparse = sparse.csc_matrix(A_sparse)
+        B_sparse.setdiag(0)
+        nb_scc, labels = sparse.csgraph.connected_components(B_sparse, directed=True,connection='weak')
+        
+        scc = [[] for _ in range(nb_scc)]
+        for i, label in enumerate(labels):
+            scc[label].append(i)
+        
+        self.subnetws = scc
+        
         cell_subgraphs = []
         self.scc_submats = []
         self.nonempty_subgraphs = []
@@ -152,12 +158,14 @@ class StateTransitionSubGraphs:
             # Slicing done it two steps : First the rows, which is the most efficient for csr sparse matrix
             # then columns. I should probably dig deeper
             t_sparse = A_sparse[subnet, :][:, subnet]
+            t_sparse.setdiag(0)
+            nb_scc, labels = sparse.csgraph.connected_components(t_sparse, directed=True,connection='strong')
             
-            t_g = nx.from_scipy_sparse_matrix(t_sparse, create_using=nx.DiGraph())
-            t_g.remove_edges_from(nx.selfloop_edges(t_g))
-            
-            # Again, do I really need to compute it ?
-            self.scc_submats.append([list(g) for g in nx.strongly_connected_components(t_g)])
+            scc = [[] for _ in range(nb_scc)]
+            for j, label in enumerate(labels):
+                scc[label].append(j)
+        
+            self.scc_submats.append(scc)
 
             if sum(x0[subnet]) > 0:
                 self.nonempty_subgraphs.append(i)
