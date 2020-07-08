@@ -56,11 +56,11 @@ class Solution:
         term_block = sparse.eye(dim_kernel)
     
         # Right kernel
-        r0_blocks = sparse.lil_matrix((dim_matr, dim_kernel), dtype=np.float32)
+        r0_blocks = sparse.lil_matrix((dim_matr, dim_kernel))
         r0_blocks[np.ix_(term_block_inds, colnum_r_null_array)] = term_block    
         
         # Left kernel
-        l0_blocks = sparse.lil_matrix((r0_blocks.shape[0], r0_blocks.shape[1]), dtype=np.float32).transpose()
+        l0_blocks = sparse.lil_matrix((r0_blocks.shape[0], r0_blocks.shape[1])).transpose()
         nonzeros = r0_blocks.nonzero()
         l0_blocks[(nonzeros[1], nonzeros[0])] = 1
         
@@ -79,7 +79,7 @@ class Solution:
             use_umfpack=True
         ).conj().transpose()
         
-        l0_blocks[np.ix_(colnum_r_null_array, nonterm_block_inds)] = X_block;
+        l0_blocks[np.ix_(colnum_r_null_array, nonterm_block_inds)] = X_block
 
         stat_sol_submatr_blocks = r0_blocks * l0_blocks * x0[submatrix_inds[sorted_vertices_terminal_bottom]]
         
