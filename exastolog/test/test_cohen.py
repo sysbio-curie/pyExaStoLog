@@ -14,4 +14,6 @@ class TestCohen(TestCase):
             [1, 1, 0, 0, 0, 0, 0, 1, 0], 
         )
         
-        print(simulation.solution.stat_sol)
+        self.assertAlmostEqual(simulation.solution.stat_sol[206719,0], 0.6644136756213966)
+        self.assertAlmostEqual(simulation.solution.stat_sol[790915,0], 0.1986146978998941)
+        self.assertAlmostEqual(simulation.solution.stat_sol[803203,0], 0.13697162647870864)
