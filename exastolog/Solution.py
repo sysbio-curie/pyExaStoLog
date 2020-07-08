@@ -64,22 +64,24 @@ class Solution:
         nonzeros = r0_blocks.nonzero()
         l0_blocks[(nonzeros[1], nonzeros[0])] = 1
         
-        X_block = (
-            -r0_blocks[np.ix_(term_block_inds, colnum_r_null_array)]
-            *K_sp_sub_reord[np.ix_(term_block_inds, nonterm_block_inds)]
-        )
+        if dim_matr > dim_kernel:
         
-        # https://stackoverflow.com/questions/1007442/mrdivide-function-in-matlab-what-is-it-doing-and-how-can-i-do-it-in-python
-        # TL;DR: A/B = np.linalg.solve(B.conj().T, A.conj().T).conj().T
-        
-        sparse.linalg.use_solver(useUmfpack=True, assumeSortedIndices=False)
-        X_block = sparse.linalg.spsolve(
-            K_sp_sub_reord[np.ix_(nonterm_block_inds,nonterm_block_inds)].tocsr().conj().transpose(),
-            X_block.conj().transpose(),
-            use_umfpack=True
-        ).conj().transpose()
-        
-        l0_blocks[np.ix_(colnum_r_null_array, nonterm_block_inds)] = X_block
+            X_block = (
+                -r0_blocks[np.ix_(term_block_inds, colnum_r_null_array)]
+                *K_sp_sub_reord[np.ix_(term_block_inds, nonterm_block_inds)]
+            )
+            
+            # https://stackoverflow.com/questions/1007442/mrdivide-function-in-matlab-what-is-it-doing-and-how-can-i-do-it-in-python
+            # TL;DR: A/B = np.linalg.solve(B.conj().T, A.conj().T).conj().T
+            
+            sparse.linalg.use_solver(useUmfpack=True, assumeSortedIndices=False)
+            X_block = sparse.linalg.spsolve(
+                K_sp_sub_reord[np.ix_(nonterm_block_inds,nonterm_block_inds)].tocsr().conj().transpose(),
+                X_block.conj().transpose(),
+                use_umfpack=True
+            ).conj().transpose()
+            
+            l0_blocks[np.ix_(colnum_r_null_array, nonterm_block_inds)] = X_block
 
         stat_sol_submatr_blocks = r0_blocks * l0_blocks * x0[submatrix_inds[sorted_vertices_terminal_bottom]]
         
@@ -147,27 +149,28 @@ class Solution:
     #         colnum_r_null_array = [0]
     #         size_r0_blocks = [r0_blocks.shape[0], 1]
 
-        term_block_inds = range(dim_matr -dim_kernel,dim_matr)
-        nonterm_block_inds = range(dim_matr-dim_kernel)
-        
         l0_blocks = sparse.lil_matrix((size_r0_blocks[0], size_r0_blocks[1])).transpose()
         t_inds = sparse.find((r0_blocks != 0).transpose())
         l0_blocks[np.ix_(t_inds[0], t_inds[1])] = 1
         
-        X_block = (
-            -l0_blocks[np.ix_(colnum_r_null_array,term_block_inds)]
-            *K_sp_sub_reord[np.ix_(term_block_inds, nonterm_block_inds)]
-        )
+        if dim_matr > dim_kernel:
+            term_block_inds = range(dim_matr -dim_kernel,dim_matr)
+            nonterm_block_inds = range(dim_matr-dim_kernel)
+            
+            X_block = (
+                -l0_blocks[np.ix_(colnum_r_null_array,term_block_inds)]
+                *K_sp_sub_reord[np.ix_(term_block_inds, nonterm_block_inds)]
+            )
         
-        sparse.linalg.use_solver(useUmfpack=True, assumeSortedIndices=False)
-        X_block = sparse.linalg.spsolve(
-            K_sp_sub_reord[np.ix_(nonterm_block_inds,nonterm_block_inds)].tocsr().conj().transpose(),
-            X_block.conj().transpose(),
-            use_umfpack=True
-        ).conj().transpose()
+            sparse.linalg.use_solver(useUmfpack=True, assumeSortedIndices=False)
+            X_block = sparse.linalg.spsolve(
+                K_sp_sub_reord[np.ix_(nonterm_block_inds,nonterm_block_inds)].tocsr().conj().transpose(),
+                X_block.conj().transpose(),
+                use_umfpack=True
+            ).conj().transpose()
         
-        l0_blocks[np.ix_(colnum_r_null_array, nonterm_block_inds)] = X_block
-        
+            l0_blocks[np.ix_(colnum_r_null_array, nonterm_block_inds)] = X_block
+            
         return l0_blocks
 
     def split_calc_inverse(self, A_sparse, subgraphs, transition_rates_table, x0):
