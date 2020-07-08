@@ -69,35 +69,15 @@ class Solution:
             *K_sp_sub_reord[np.ix_(term_block_inds, nonterm_block_inds)]
         )
         
-        # Solution 6
         # https://stackoverflow.com/questions/1007442/mrdivide-function-in-matlab-what-is-it-doing-and-how-can-i-do-it-in-python
-        #TL;DR: A/B = np.linalg.solve(B.conj().T, A.conj().T).conj().T
-        # import time
-        # import scipy
-        # Here we have 3 solutions : scipy sparse, scipy dense, numpy
-        # And numpy is faster on the kras example
-        # Using sparse solve
+        # TL;DR: A/B = np.linalg.solve(B.conj().T, A.conj().T).conj().T
         
-        # t0 = time.time()
-        # X_block = sparse.linalg.spsolve(
-        #     K_sp_sub_reord[np.ix_(nonterm_block_inds,nonterm_block_inds)].tocsr().conj().transpose(),
-        #     X_block.conj().transpose()
-        # ).conj().transpose()
-        
-        # Using scipy solve
-        # t1 = time.time()
-        # X_block = scipy.linalg.solve(
-        #     K_sp_sub_reord[np.ix_(nonterm_block_inds,nonterm_block_inds)].todense().conj().transpose(),
-        #     X_block.todense().conj().transpose()
-        # ).conj().transpose()
-        
-        # Using numpy's solve
-        # t2 = time.time()
-        X_block = np.linalg.solve(
-            K_sp_sub_reord[np.ix_(nonterm_block_inds,nonterm_block_inds)].toarray().conj().transpose(),
-            X_block.toarray().conj().transpose()
+        # sparse.linalg.use_solver(useUmfpack=True, assumeSortedIndices=True)
+        X_block = sparse.linalg.spsolve(
+            K_sp_sub_reord[np.ix_(nonterm_block_inds,nonterm_block_inds)].tocsr().conj().transpose(),
+            X_block.conj().transpose(),
+            use_umfpack=False
         ).conj().transpose()
-        # print("1 : %.2gs, 2 : %.2gs, 3 : %.2gs" % (t1-t0, t2-t1, time.time()-t2))
         
         l0_blocks[np.ix_(colnum_r_null_array, nonterm_block_inds)] = X_block;
 
@@ -180,10 +160,10 @@ class Solution:
             *K_sp_sub_reord[np.ix_(term_block_inds, nonterm_block_inds)]
         )
         
-        # Using numpy's solve
-        X_block = np.linalg.solve(
-            K_sp_sub_reord[np.ix_(nonterm_block_inds,nonterm_block_inds)].toarray().conj().transpose(),
-            X_block.toarray().conj().transpose()
+        X_block = sparse.linalg.spsolve(
+            K_sp_sub_reord[np.ix_(nonterm_block_inds,nonterm_block_inds)].tocsr().conj().transpose(),
+            X_block.conj().transpose(),
+            use_umfpack=False
         ).conj().transpose()
         
         l0_blocks[np.ix_(colnum_r_null_array, nonterm_block_inds)] = X_block
