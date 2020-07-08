@@ -72,11 +72,11 @@ class Solution:
         # https://stackoverflow.com/questions/1007442/mrdivide-function-in-matlab-what-is-it-doing-and-how-can-i-do-it-in-python
         # TL;DR: A/B = np.linalg.solve(B.conj().T, A.conj().T).conj().T
         
-        # sparse.linalg.use_solver(useUmfpack=True, assumeSortedIndices=True)
+        sparse.linalg.use_solver(useUmfpack=True, assumeSortedIndices=False)
         X_block = sparse.linalg.spsolve(
             K_sp_sub_reord[np.ix_(nonterm_block_inds,nonterm_block_inds)].tocsr().conj().transpose(),
             X_block.conj().transpose(),
-            use_umfpack=False
+            use_umfpack=True
         ).conj().transpose()
         
         l0_blocks[np.ix_(colnum_r_null_array, nonterm_block_inds)] = X_block;
@@ -159,10 +159,11 @@ class Solution:
             *K_sp_sub_reord[np.ix_(term_block_inds, nonterm_block_inds)]
         )
         
+        sparse.linalg.use_solver(useUmfpack=True, assumeSortedIndices=False)
         X_block = sparse.linalg.spsolve(
             K_sp_sub_reord[np.ix_(nonterm_block_inds,nonterm_block_inds)].tocsr().conj().transpose(),
             X_block.conj().transpose(),
-            use_umfpack=False
+            use_umfpack=True
         ).conj().transpose()
         
         l0_blocks[np.ix_(colnum_r_null_array, nonterm_block_inds)] = X_block
