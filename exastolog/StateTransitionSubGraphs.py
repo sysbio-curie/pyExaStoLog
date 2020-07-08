@@ -54,7 +54,7 @@ class StateTransitionSubGraphs:
         # Here we reverse it only for debugging purpose
         # The order shouldn't matter, but it's nice to have the same as matlab
         scc_list = list(reversed(list(nx.strongly_connected_components(g_sub))))
-        print("%d connected components" % len(scc_list))
+        # print("%d connected components" % len(scc_list))
 
         
         num_verts_per_scc = []
@@ -135,7 +135,7 @@ class StateTransitionSubGraphs:
 
     def fcn_scc_subgraphs(self, A_sparse, x0):
         
-        print("Indentifying SCCs")
+        # print("Indentifying SCCs")
         
         B_sparse = sparse.csc_matrix(A_sparse)
         B_sparse.setdiag(0)
@@ -150,8 +150,7 @@ class StateTransitionSubGraphs:
         cell_subgraphs = []
         self.scc_submats = []
         self.nonempty_subgraphs = []
-        # print(len(self.subnetws))
-        print("Identifying SCCs in subgraphs")
+        # print("Identifying SCCs in subgraphs")
         for i, subnet in enumerate(self.subnetws):
             cell_subgraphs.append(subnet)
             
@@ -182,10 +181,9 @@ class StateTransitionSubGraphs:
                 t_g = nx.from_scipy_sparse_matrix(A_sparse_sub, create_using=nx.DiGraph())
                 t_g.remove_edges_from(nx.selfloop_edges(t_g))
                 self.sorted_vertices.append(list(nx.topological_sort(t_g)))
-                # print("toposort results")
-                # print(list(nx.topological_sort(t_g)))
+                
             else:
-                print("Cycles in STG")
+                # print("Cycles in STG")
                 
                 # If entire graph is only one connected component, no need for re-ordering
                 if len(self.scc_submats[nonempty_subgraph]) == 1:
@@ -200,7 +198,7 @@ class StateTransitionSubGraphs:
                             if j == i+1:
                                 a[j-1] += 1
                         
-                    print('Cycles of lenth: %s (%s times)' % (set(cycle_lengths), a[np.where(a>0)]) )
+                    # print('Cycles of lenth: %s (%s times)' % (set(cycle_lengths), a[np.where(a>0)]) )
                     self.cyclic_sorted_subgraphs.append((vert_topol_sort, term_cycles_ind, term_cycle_bounds))
 
             counter += 1

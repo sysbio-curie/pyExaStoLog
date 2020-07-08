@@ -136,18 +136,11 @@ class Solution:
 
     def fcn_left_kernel(self, K_sp_sub_reord, r0_blocks, dim_matr):
         
-        print("Constructing left kernel")
+        # print("Constructing left kernel")
 
-        if len(r0_blocks.shape) > 1:
-            dim_kernel = np.sum(r0_blocks.sum(axis=1) != 0)
-            colnum_r_null_array = range(r0_blocks.shape[1])
-            size_r0_blocks = r0_blocks.shape
-        else:
-            print("Here we have a problem, the r0_blocks is actually 1D. Trying... RESULTS NEED TO BE CHECKED !!!")
-        
-    #         dim_kernel = np.sum(np.logical_not(np.isin(r0_blocks, 0)))
-    #         colnum_r_null_array = [0]
-    #         size_r0_blocks = [r0_blocks.shape[0], 1]
+        dim_kernel = np.sum(r0_blocks.sum(axis=1) != 0)
+        colnum_r_null_array = range(r0_blocks.shape[1])
+        size_r0_blocks = r0_blocks.shape
 
         l0_blocks = sparse.lil_matrix((size_r0_blocks[0], size_r0_blocks[1])).transpose()
         t_inds = sparse.find((r0_blocks != 0).transpose())
@@ -183,18 +176,17 @@ class Solution:
         self.term_verts = []
         self.cell_subgraphs = []
 
-        if num_subnets>1:
-            print('STG has multiple subgraphs')
+        # if num_subnets>1:
+        #     print('STG has multiple subgraphs')
 
         counter_subgraphs=0
-        
         for i in subgraphs.nonempty_subgraphs:
             
             submatrix_inds = np.array(subgraphs.subnetws[i])
             self.cell_subgraphs.append(submatrix_inds)
 
-            if num_subnets > 1:
-                print("Calculating subgraph #%d of %d" % (i+1, num_subnets))
+            # if num_subnets > 1:
+            #     print("Calculating subgraph #%d of %d" % (i+1, num_subnets))
                 
             A_sparse_sub = A_sparse[subgraphs.subnetws[i], :][:, subgraphs.subnetws[i]]
             dim_matr = A_sparse_sub.shape[0]
@@ -237,7 +229,7 @@ class Solution:
                 
             else:
             
-                print('cycles in STG')
+                # print('cycles in STG')
                 if len(scc_submat) == 1:
     #             % if entire graph is one connected component, no reordering needed
                     K_sp_sub_reord = (A_sparse_sub.transpose() - sparse.eye(dim_matr, dim_matr)) * sum(transition_rates_table.flatten())
@@ -258,7 +250,7 @@ class Solution:
                     
 
                 else:
-                    print("Not a unique connected component")
+                    # print("Not a unique connected component")
                 
                     vert_topol_sort = subgraphs.cyclic_sorted_subgraphs[counter_subgraphs][0]
                     term_cycles_ind = subgraphs.cyclic_sorted_subgraphs[counter_subgraphs][1]
@@ -270,14 +262,14 @@ class Solution:
 
                     # if cycles are non-terminal, stat sol can be calculated by block inversion, sames as for acyclic graphs
                     if len(term_cycles_ind) == 0:
-                        print("Empty term cycles ind")
+                        # print("Empty term cycles ind")
     #                      % here make sure if 'vert_topol_sort' is the right ordering...
                         stat_sol_submatr_blocks = self.fcn_block_inversion(K_sp_sub_reord, vert_topol_sort, x0, submatrix_inds)
                         self.stat_sol[submatrix_inds[vert_topol_sort]] = stat_sol_submatr_blocks
                         self.term_verts.append(submatrix_inds[vert_topol_sort[np.where(K_sp_sub_reord.diagonal() == 0)]])
 
                     else:
-                        print("Non empty term cycles ind")
+                        # print("Non empty term cycles ind")
                         
                         # if there are terminal cycles, stat sol calc a bit more complicated
                         # need to identify terminal cycles, for corresponding columns of
@@ -316,7 +308,7 @@ class Solution:
     #                         r0_blocks=[r_null_cycles r_null_single_vert];
                             return
                         else:
-                            print("no single vertex terminal states")
+                            # print("no single vertex terminal states")
                             r0_blocks = r_null_cycles
                             
                         # calculate kernel

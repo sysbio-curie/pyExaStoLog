@@ -95,10 +95,7 @@ class InitialState:
         # rounding precision
         n_prec=3
 
-        if round(sum(x0)[0],n_prec) == 1:
-            print('sum(x0)=1, OK.')
-        
-        else:
+        if not round(sum(x0)[0],n_prec) == 1:
             print('sum(x0)~=1, something wrong!')
 
     #     if ~isempty(plot_flag)
