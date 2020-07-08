@@ -39,4 +39,5 @@ jobs:
         coverage run -a -m unittest exastolog.test.test_mammalian_cc
         coverage run -a -m unittest exastolog.test.test_zanudo2017
         coverage run -a -m unittest exastolog.test.test_cohen
+        coverage run -a -m unittest exastolog.test.test_sahin
         coveralls
