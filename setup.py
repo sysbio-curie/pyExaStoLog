@@ -1,7 +1,7 @@
 from setuptools import setup, find_packages
 
 setup(name='exastolog',
-    version="1.0.0a1",
+    version="1.0.0a3",
     author="Vincent Noel",
     author_email="contact@vincent-noel.fr",
     description="A library for the exact calculation of stationary states of MaBoSS models",
