@@ -31,10 +31,47 @@
 from .InitialState import InitialState
 from .StateTransitionSubGraphs import StateTransitionSubGraphs
 from .Solution import Solution
+import numpy as np
+import pandas as pd
 
 class Simulation:
     
     def __init__(self, model, initial_fixed_nodes, initial_fixed_nodes_vals):
+        self.model = model
         self.initial_state = InitialState(initial_fixed_nodes, initial_fixed_nodes_vals, model.nodes)
         self.stateTransitionSubGraphs = StateTransitionSubGraphs(model.stateTransitionGraph.A_sparse, self.initial_state.x0)
         self.solution = Solution(model.stateTransitionGraph.A_sparse, self.stateTransitionSubGraphs, model.transitionRatesTable, self.initial_state.x0)
+        self.last_states_probtraj = None
+        
+    def get_last_states_probtraj(self):
+        
+        
+        probs = np.zeros((len(self.solution.stat_sol.nonzero()[0])))
+        states = []
+        
+        for i, stateval in enumerate(self.solution.stat_sol.nonzero()[0]):
+     
+            binstate = np.zeros((len(self.model.nodes)))
+            c = len(self.model.nodes)-1
+            t_stateval = stateval
+        
+            while t_stateval > 0:
+                binstate[c] = t_stateval % 2
+                t_stateval = t_stateval // 2
+                c -= 1
+            
+            inds_states, = np.where(np.flip(binstate))
+        
+            if len(inds_states) > 0:
+                t_state = [self.model.nodes[ind] for ind in inds_states]
+                states.append(" -- ".join(t_state))
+            
+            else:
+                states.append("<nil>")
+            
+            probs[i] = self.solution.stat_sol[stateval, 0]
+        
+        self.last_states_probtraj = pd.DataFrame([probs], columns=states)
+        self.last_states_probtraj.sort_index(axis=1, inplace=True)
+        
+        return self.last_states_probtraj
