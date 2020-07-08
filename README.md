@@ -2,13 +2,21 @@
 
 # pyExaStoLog : a python library for EXAct calculation of STOchastic LOGical models 
 
+## Dependencies
+[SuiteSparse](http://faculty.cse.tamu.edu/davis/suitesparse.html) and [SWIG](http://www.swig.org/) might be required to build the [scikit-umfpack](https://scikit-umfpack.github.io/scikit-umfpack/) python library.
+    
+To install them debian/ubuntu : 
+
+    sudo apt install libsuitesparse-dev swig
+
+
 ## Install
 #### From PyPi
-    - pip install exastolog
+    pip install exastolog
     
 #### From your local clone
-    - git clone https://github.com/sysbio-curie/pyExaStoLog
-    - pip install pyExaStoLog
+    git clone https://github.com/sysbio-curie/pyExaStoLog
+    pip install pyExaStoLog
 
 ## Examples
 - [Toy model](https://github.com/sysbio-curie/pyExaStoLog/blob/master/notebooks/Toy%20model.ipynb)
