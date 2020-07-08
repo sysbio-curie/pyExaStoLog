@@ -137,7 +137,7 @@ class Solution:
         print("Constructing left kernel")
 
         if len(r0_blocks.shape) > 1:
-            dim_kernel = np.sum(np.logical_not(np.isin(np.sum(r0_blocks, axis=1), 0)))
+            dim_kernel = np.sum(r0_blocks.sum(axis=1) != 0)
             colnum_r_null_array = range(r0_blocks.shape[1])
             size_r0_blocks = r0_blocks.shape
         else:
