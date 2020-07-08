@@ -201,8 +201,8 @@ class Solution:
             if len(set([tuple(t_submat) for t_submat in scc_submat])) == dim_matr:
                 
                 # function to reorder vertices and keep ordering
-                terminal_nodes = np.where(A_sparse_sub.diagonal() == 1)
-    #             print(terminal_nodes)
+                _, terminal_nodes, _ = sparse.find(A_sparse_sub.diagonal() == 1)
+
                 # this is a consistent ordering but terminals are not necessarily in lower right corner of matrix
                 A_orig_reordered = A_sparse_sub[subgraphs.sorted_vertices[counter_subgraphs], :][:, subgraphs.sorted_vertices[counter_subgraphs]]
 
