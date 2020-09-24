@@ -63,11 +63,12 @@ class StateTransitionGraph:
         if kin_matr_flag:
             self.K_sparse = (self.A_sparse.transpose() - sparse.eye(self.A_sparse.shape[0]))*np.sum(transition_rates_table)
 
-        else:
-            self.K_sparse = []
 
     def memsize(self):
         A_size = self.A_sparse.data.nbytes + self.A_sparse.indptr.nbytes + self.A_sparse.indices.nbytes
-        K_size = self.K_sparse.data.nbytes + self.K_sparse.indptr.nbytes + self.K_sparse.indices.nbytes
-        return human_size(A_size + K_size) + " (A=" + human_size(A_size) + ", K=" + human_size(K_size) + ")"
+        if self.K_sparse is not None:
+            K_size = self.K_sparse.data.nbytes + self.K_sparse.indptr.nbytes + self.K_sparse.indices.nbytes
+            return human_size(A_size + K_size) + " (A=" + human_size(A_size) + ", K=" + human_size(K_size) + ")"
+        else:
+            return human_size(A_size)
         
