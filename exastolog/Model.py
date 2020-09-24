@@ -69,5 +69,5 @@ class Model:
             self.nodes, distr_type, meanval, sd_val, chosen_rates, chosen_rates_vals
         )
 
-    def buildStateTransitionGraph(self, kin_matr_flag='yes'):
+    def buildStateTransitionGraph(self, kin_matr_flag=False):
         self.stateTransitionGraph = StateTransitionGraph(self.stateTransitionTable.stg_table, self.transitionRatesTable.table, kin_matr_flag)

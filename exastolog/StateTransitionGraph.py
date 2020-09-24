@@ -35,7 +35,7 @@ from .utils import human_size
 
 class StateTransitionGraph:
     
-    def __init__(self, state_transition_table, transition_rates_table, kin_matr_flag="yes"):
+    def __init__(self, state_transition_table, transition_rates_table, kin_matr_flag=False):
         self.A_sparse = None
         self.K_sparse = None
         self.fcn_build_trans_matr(state_transition_table, transition_rates_table, kin_matr_flag)
@@ -60,7 +60,7 @@ class StateTransitionGraph:
 
         self.A_sparse = B + (sparse.eye(B.shape[0]) - sparse.diags(np.array(sparse.csr_matrix.sum(B, axis=1).transpose())[0]))
 
-        if len(kin_matr_flag) > 0:
+        if kin_matr_flag:
             self.K_sparse = (self.A_sparse.transpose() - sparse.eye(self.A_sparse.shape[0]))*np.sum(transition_rates_table)
 
         else:
