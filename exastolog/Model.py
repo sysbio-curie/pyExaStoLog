@@ -67,7 +67,7 @@ class Model:
     def buildTransitionRateTable(self, distr_type='uniform', meanval=1, sd_val=0, chosen_rates=[], chosen_rates_vals=[]):
         self.transitionRatesTable = TransRateTable(
             self.nodes, distr_type, meanval, sd_val, chosen_rates, chosen_rates_vals
-        ).table
+        )
 
     def buildStateTransitionGraph(self, kin_matr_flag='yes'):
-        self.stateTransitionGraph = StateTransitionGraph(self.stateTransitionTable.stg_table, self.transitionRatesTable, kin_matr_flag)
+        self.stateTransitionGraph = StateTransitionGraph(self.stateTransitionTable.stg_table, self.transitionRatesTable.table, kin_matr_flag)
