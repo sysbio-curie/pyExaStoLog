@@ -28,7 +28,7 @@
 # OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 # OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
-import boolean
+import boolean, time
 
 from .TransRateTable import TransRateTable
 from .StateTransitionTable import StateTransitionTable
@@ -36,9 +36,10 @@ from .StateTransitionGraph import StateTransitionGraph
 
 class Model:
     
-    def __init__(self, bnet_filename):
+    def __init__(self, bnet_filename, profiling=False):
         self.model = None
         self.nodes = None
+        self.profiling = profiling
         self.stateTransitionTable = None
         self.transitionRatesTable = None
         self.stateTransitionGraph = None
@@ -62,12 +63,29 @@ class Model:
                     self.model.update({species:b_formula})
         
     def buildStateTransitionTable(self):
+        if self.profiling:
+            t0 = time.time()
         self.stateTransitionTable = StateTransitionTable(self.model, self.nodes)
+        if self.profiling:
+            print("Size of state transition table : %s" % self.stateTransitionTable.memsize())
+            print("Computed in %.2gs" % (time.time()-t0))
 
     def buildTransitionRateTable(self, distr_type='uniform', meanval=1, sd_val=0, chosen_rates=[], chosen_rates_vals=[]):
+        if self.profiling:
+            t0 = time.time()
         self.transitionRatesTable = TransRateTable(
             self.nodes, distr_type, meanval, sd_val, chosen_rates, chosen_rates_vals
         )
+        if self.profiling:
+            # print(self.transitionRatesTable)
+            print("Size of transition rates table : %s" % self.transitionRatesTable.memsize())
+            print("Computed in %.2gs" % (time.time()-t0))
+
 
     def buildStateTransitionGraph(self, kin_matr_flag=False):
+        if self.profiling:
+            t0 = time.time()
         self.stateTransitionGraph = StateTransitionGraph(self.stateTransitionTable.stg_table, self.transitionRatesTable.table, kin_matr_flag)
+        if self.profiling:
+            print("Size of state transition graph : %s" % self.stateTransitionGraph.memsize())
+            print("Computed in %.2gs" % (time.time()-t0))
