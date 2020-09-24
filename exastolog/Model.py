@@ -62,7 +62,7 @@ class Model:
                     self.model.update({species:b_formula})
         
     def buildStateTransitionTable(self):
-        self.stateTransitionTable = StateTransitionTable(self.model, self.nodes).stg_table
+        self.stateTransitionTable = StateTransitionTable(self.model, self.nodes)
 
     def buildTransitionRateTable(self, distr_type='uniform', meanval=1, sd_val=0, chosen_rates=[], chosen_rates_vals=[]):
         self.transitionRatesTable = TransRateTable(
@@ -70,4 +70,4 @@ class Model:
         ).table
 
     def buildStateTransitionGraph(self, kin_matr_flag='yes'):
-        self.stateTransitionGraph = StateTransitionGraph(self.stateTransitionTable, self.transitionRatesTable, kin_matr_flag)
+        self.stateTransitionGraph = StateTransitionGraph(self.stateTransitionTable.stg_table, self.transitionRatesTable, kin_matr_flag)
