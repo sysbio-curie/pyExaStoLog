@@ -30,6 +30,8 @@
 
 import numpy as np
 import scipy.sparse as sparse
+from .utils import human_size
+
 
 class StateTransitionGraph:
     
@@ -64,3 +66,8 @@ class StateTransitionGraph:
         else:
             self.K_sparse = []
 
+    def memsize(self):
+        A_size = self.A_sparse.data.nbytes + self.A_sparse.indptr.nbytes + self.A_sparse.indices.nbytes
+        K_size = self.K_sparse.data.nbytes + self.K_sparse.indptr.nbytes + self.K_sparse.indices.nbytes
+        return human_size(A_size + K_size) + " (A=" + human_size(A_size) + ", K=" + human_size(K_size) + ")"
+        

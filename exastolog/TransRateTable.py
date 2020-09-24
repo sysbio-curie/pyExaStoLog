@@ -31,6 +31,7 @@
 
 import numpy as np
 
+from .utils import human_size
 
 class TransRateTable:
     
@@ -74,3 +75,6 @@ class TransRateTable:
                 return
         
         return np.reshape(rate_vals_num, (n, 2)).transpose()
+
+    def memsize(self):
+        return human_size(self.table.nbytes)

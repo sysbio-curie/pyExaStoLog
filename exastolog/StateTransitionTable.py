@@ -30,6 +30,7 @@
 
 import numpy as np
 import boolean
+from .utils import human_size
 
 class StateTransitionTable:
     
@@ -169,3 +170,6 @@ class StateTransitionTable:
         stg_table = np.concatenate((np.array([source]).transpose(), target), axis=1)
         
         return stg_table
+
+    def memsize(self):
+        return human_size(self.stg_table.nbytes)
