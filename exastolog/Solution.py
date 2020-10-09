@@ -37,7 +37,7 @@ class Solution:
         self.stat_sol = None
         self.term_verts_cell = None
         self.cell_subgraphs= None
-        self.split_calc_inverse(A_sparse, subgraphs, transitionRatesTable, x0)
+        self.split_calc_inverse(A_sparse, subgraphs, transitionRatesTable.table, x0)
     
     
     def fcn_block_inversion(self, K_sp_sub_reord, sorted_vertices_terminal_bottom, x0, submatrix_inds):
@@ -165,7 +165,9 @@ class Solution:
             l0_blocks[np.ix_(colnum_r_null_array, nonterm_block_inds)] = X_block
             
         return l0_blocks
+    from memory_profiler import profile
 
+    @profile
     def split_calc_inverse(self, A_sparse, subgraphs, transition_rates_table, x0):
         
         # is the STG disconnected?

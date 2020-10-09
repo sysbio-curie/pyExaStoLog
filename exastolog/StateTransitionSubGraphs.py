@@ -31,6 +31,8 @@
 import networkx as nx
 import numpy as np
 import scipy.sparse as sparse
+import sys
+from memory_profiler import profile
 
 class StateTransitionSubGraphs:
     
@@ -43,7 +45,11 @@ class StateTransitionSubGraphs:
         self.cyclic_sorted_subgraphs = None
         
         self.fcn_scc_subgraphs(A_sparse, x0)
-            
+       
+    # def memsize(self):
+        # return sys.getsizeof(self.subnetws) + sys.getsizeof(self.nonempty_subgraphs) + sys.getsizeof(self.sorted_vertices) + sys.getsizeof(self.cyc)
+
+    @profile
     def fcn_metagraph_scc(self, A_sparse_sub):
         
         matr_size = A_sparse_sub.shape[0]
@@ -133,6 +139,7 @@ class StateTransitionSubGraphs:
         return vert_topol_sort, term_cycles_ind, A_metagraph, scc_list, term_cycles_bounds
 
 
+    @profile
     def fcn_scc_subgraphs(self, A_sparse, x0):
         
         # print("Indentifying SCCs")

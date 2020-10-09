@@ -47,9 +47,9 @@ class Model:
         self.readBNet(bnet_filename)
         self.nodes = list(self.model.keys())
         
-        self.buildStateTransitionTable()
+        trans_table = self.buildStateTransitionTable()
         self.buildTransitionRateTable()        
-        self.buildStateTransitionGraph()
+        self.buildStateTransitionGraph(trans_table)
         
     def readBNet(self, filename):
         self.model = {}
@@ -65,10 +65,11 @@ class Model:
     def buildStateTransitionTable(self):
         if self.profiling:
             t0 = time.time()
-        self.stateTransitionTable = StateTransitionTable(self.model, self.nodes)
+        stateTransitionTable = StateTransitionTable(self.model, self.nodes)
         if self.profiling:
-            print("Size of state transition table : %s" % self.stateTransitionTable.memsize())
+            print("Size of state transition table : %s" % stateTransitionTable.memsize())
             print("Computed in %.2gs" % (time.time()-t0))
+        return stateTransitionTable
 
     def buildTransitionRateTable(self, distr_type='uniform', meanval=1, sd_val=0, chosen_rates=[], chosen_rates_vals=[]):
         if self.profiling:
@@ -82,10 +83,10 @@ class Model:
             print("Computed in %.2gs" % (time.time()-t0))
 
 
-    def buildStateTransitionGraph(self, kin_matr_flag=False):
+    def buildStateTransitionGraph(self, trans_table, kin_matr_flag=False):
         if self.profiling:
             t0 = time.time()
-        self.stateTransitionGraph = StateTransitionGraph(self.stateTransitionTable.stg_table, self.transitionRatesTable.table, kin_matr_flag)
+        self.stateTransitionGraph = StateTransitionGraph(trans_table.stg_table, self.transitionRatesTable.table, kin_matr_flag)
         if self.profiling:
             print("Size of state transition graph : %s" % self.stateTransitionGraph.memsize())
             print("Computed in %.2gs" % (time.time()-t0))

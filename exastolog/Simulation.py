@@ -33,14 +33,28 @@ from .StateTransitionSubGraphs import StateTransitionSubGraphs
 from .Solution import Solution
 import numpy as np
 import pandas as pd
-
+import time
 class Simulation:
     
-    def __init__(self, model, initial_fixed_nodes, initial_fixed_nodes_vals):
+    def __init__(self, model, initial_fixed_nodes, initial_fixed_nodes_vals, profiling=True):
         self.model = model
+        if profiling:
+            t0 = time.time() 
         self.initial_state = InitialState(initial_fixed_nodes, initial_fixed_nodes_vals, model.nodes)
+        
+        if profiling:
+            print("Initial states built in %.2gs" % (time.time()-t0))
+            t0 = time.time()
+            
         self.stateTransitionSubGraphs = StateTransitionSubGraphs(model.stateTransitionGraph.A_sparse, self.initial_state.x0)
+        if profiling:
+            print("StateTransitionSubgraphs built in %.2gs" % (time.time()-t0))
+            t0 = time.time()
+        
         self.solution = Solution(model.stateTransitionGraph.A_sparse, self.stateTransitionSubGraphs, model.transitionRatesTable, self.initial_state.x0)
+        if profiling:
+            print("Solution computed in %.2gs" % (time.time()-t0))
+        
         self.last_states_probtraj = None
         
     def get_last_states_probtraj(self):

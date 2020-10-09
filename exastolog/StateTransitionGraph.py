@@ -65,6 +65,8 @@ class StateTransitionGraph:
 
 
     def memsize(self):
+        
+        # https://stackoverflow.com/questions/11173019/determining-the-byte-size-of-a-scipy-sparse-matrix
         A_size = self.A_sparse.data.nbytes + self.A_sparse.indptr.nbytes + self.A_sparse.indices.nbytes
         if self.K_sparse is not None:
             K_size = self.K_sparse.data.nbytes + self.K_sparse.indptr.nbytes + self.K_sparse.indices.nbytes
